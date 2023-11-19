@@ -1,34 +1,26 @@
 import { useContext } from "react";
 import { MovieCTX } from "../Context/Context";
-import styles from './MovieInformation.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faBookmark, faClock, faStar } from '@fortawesome/free-solid-svg-icons';
+import styles from './MovieDetail.module.css';
+import { faBookmark, faClock, faStar } from '@fortawesome/free-solid-svg-icons';
 import InformationCard from "../Components/InformationCard/InformationCard";
 import Button from "../Components/Button/Button";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import BackComponent from "../Components/BackComponent/BackComponent";
 
 function hourFormatter(minutes: number) {
     return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
 }
 
-function MovieInformation() {
+function MovieDetail() {
     const movieCTX = useContext(MovieCTX);
-    const navigate = useNavigate();
 
     function clickHandle() {
         console.log('clicked');
     }
 
-    function goBack() {
-        navigate('/');
-    }
-
     return (
         <div className={styles.container}>
-            <div className={styles['back-container']}>
-                <FontAwesomeIcon icon={faArrowLeft} onClick={goBack}/>
-                <span>Movie Detail</span>
-            </div>
+            <BackComponent link={'/'}>Movie Details</BackComponent>
             <div className={styles.wrapper}>
                 <div className={styles['hero-container']}>
                     <img src={movieCTX.movie.image} className={styles.img}></img>
@@ -46,12 +38,12 @@ function MovieInformation() {
                         <b>Actors: </b> 
                         {movieCTX.movie.actors.map((actor, index) => {return actor + (index == movieCTX.movie.actors.length - 1 ? '' : ', ')})}
                     </p>
-                    <Button clickHandle={clickHandle}>Get Ticket</Button>
-                    <Button clickHandle={clickHandle}>Watch Trailer</Button>
+                    <Link to={'/booking'}><Button clickHandle={clickHandle}>Get Ticket</Button></Link>
+                    <a href={movieCTX.movie.trailer} target="blank"><Button clickHandle={clickHandle}>Watch Trailer</Button></a>
                 </div>
             </div>
         </div>
     )
 }
 
-export default MovieInformation;
+export default MovieDetail;

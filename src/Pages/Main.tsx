@@ -35,10 +35,6 @@ function Main() {
 
     return (
         <div className={styles.container}>
-            <div className={styles['location-container']}>
-                <FontAwesomeIcon icon={faLocationDot} className={styles.icon}/>
-                <p className={styles['location-text']}>Budapest</p>
-            </div>
             <div className={styles['section-title']}>
                 <p>Playing <b>Now</b></p>
             </div>
