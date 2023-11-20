@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MovieCTX } from "../Context/Context";
 import styles from './MovieDetail.module.css';
 import { faBookmark, faClock, faStar } from '@fortawesome/free-solid-svg-icons';
@@ -6,16 +6,22 @@ import InformationCard from "../Components/InformationCard/InformationCard";
 import Button from "../Components/Button/Button";
 import { Link } from "react-router-dom";
 import BackComponent from "../Components/BackComponent/BackComponent";
+import OrderModal from "../Components/OrderModel/OrderModal";
 
 function hourFormatter(minutes: number) {
     return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
 }
 
 function MovieDetail() {
+    const [showModal, setShowModal] = useState(false);
     const movieCTX = useContext(MovieCTX);
 
     function clickHandle() {
         console.log('clicked');
+    }
+
+    function closeModal() {
+        setShowModal(!showModal);
     }
 
     return (
@@ -38,10 +44,11 @@ function MovieDetail() {
                         <b>Actors: </b> 
                         {movieCTX.movie.actors.map((actor, index) => {return actor + (index == movieCTX.movie.actors.length - 1 ? '' : ', ')})}
                     </p>
-                    <Link to={'/booking'}><Button clickHandle={clickHandle}>Get Ticket</Button></Link>
+                    <Button clickHandle={closeModal}>Get Ticket</Button>
                     <a href={movieCTX.movie.trailer} target="blank"><Button clickHandle={clickHandle}>Watch Trailer</Button></a>
                 </div>
             </div>
+            {showModal && <OrderModal closeModal={closeModal}></OrderModal>}
         </div>
     )
 }
