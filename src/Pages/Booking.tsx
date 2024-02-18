@@ -1,4 +1,5 @@
 import BackComponent from '../Components/BackComponent/BackComponent';
+import Button from '../Components/Button/Button';
 import SeatSign from '../Components/SeatSign/SeatSign';
 import styles from './Booking.module.css';
 import { useState } from 'react';
@@ -56,6 +57,9 @@ function Booking() {
                 <SeatSign color='white'>Selected</SeatSign>
                 <SeatSign color='#90A4AE'>Reserved</SeatSign>
             </div>
+            {isSelected.length != 0 && <div className={styles['confirm-container']}>
+                <Button clickHandle={() => {}}>Confirm</Button>
+            </div>}
         </div>
     );
 }

@@ -1,0 +1,21 @@
+.container {
+    width: 80%;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+    gap: 1rem;
+}
+
+.img {
+    width: calc(32rem * 0.8);
+    height: calc(40rem * 0.8);
+}

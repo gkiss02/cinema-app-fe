@@ -1,0 +1,18 @@
+.container {
+    color: black;
+    font-size: 1.5rem;
+}
+
+.text {
+    position: absolute;
+    top: 2rem;
+    z-index: 20;
+}
+
+.ticket-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
