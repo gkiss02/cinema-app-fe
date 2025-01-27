@@ -2,8 +2,8 @@ import styles from './Main.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { useState, useContext } from 'react';
-import { movies } from '../Context/Movie';
-import { MovieCTX } from '../Context/Context';
+import { movies } from '../context/Movie';
+import { MovieCTX } from '../context/Context';
 import { useNavigate } from 'react-router-dom';
 
 function Main() {

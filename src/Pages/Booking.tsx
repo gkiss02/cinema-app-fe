@@ -1,6 +1,6 @@
-import BackComponent from '../Components/BackComponent/BackComponent';
-import Button from '../Components/Button/Button';
-import SeatSign from '../Components/SeatSign/SeatSign';
+import BackComponent from '../components/BackComponent/BackComponent';
+import Button from '../components/Button/Button';
+import SeatSign from '../components/SeatSign/SeatSign';
 import styles from './Booking.module.css';
 import { useState } from 'react';
 

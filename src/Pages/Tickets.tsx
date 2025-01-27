@@ -1,5 +1,5 @@
 import styles from './Tickets.module.css';
-import Ticket from '../Components/Ticket/Ticket';
+import Ticket from '../components/Ticket/Ticket';
 
 function Tickets () {
     return (

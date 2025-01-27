@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
-import { MovieCTX } from "../Context/Context";
+import { MovieCTX } from "../context/Context";
 import styles from './MovieDetail.module.css';
 import { faBookmark, faClock, faStar } from '@fortawesome/free-solid-svg-icons';
-import InformationCard from "../Components/InformationCard/InformationCard";
-import Button from "../Components/Button/Button";
+import InformationCard from "../components/InformationCard/InformationCard";
+import Button from "../components/Button/Button";
 import { Link } from "react-router-dom";
-import BackComponent from "../Components/BackComponent/BackComponent";
-import OrderModal from "../Components/OrderModel/OrderModal";
+import BackComponent from "../components/BackComponent/BackComponent";
+import OrderModal from "../components/OrderModel/OrderModal";
 
 function hourFormatter(minutes: number) {
     return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;

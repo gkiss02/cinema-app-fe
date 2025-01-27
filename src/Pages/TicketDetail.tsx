@@ -1,8 +1,8 @@
 import styles from "./TicketDetail.module.css";
-import BackComponent from "../Components/BackComponent/BackComponent";
+import BackComponent from "../components/BackComponent/BackComponent";
 
 function TicketDetail() {
-    const img = require('../Assets/shang-chi.jpg')
+    const img = require('../assets/shang-chi.jpg')
 
     return (
         <div className={styles.container}>

@@ -1,12 +1,12 @@
-import RootLayout from "./Components/RootLayout";
+import RootLayout from "./components/RootLayout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; 
-import Main from './Pages/Main';
-import MovieInformation from "./Pages/MovieDetail";
-import MovieProvider from './Context/MovieProvider'
-import Booking from "./Pages/Booking";
-import TicketDetail from "./Pages/TicketDetail";
-import Tickets from "./Pages/Tickets";
-import MyProfile from "./Pages/MyProfile";
+import Main from './pages/Main';
+import MovieInformation from "./pages/MovieDetail";
+import MovieProvider from './context/MovieProvider'
+import Booking from "./pages/Booking";
+import TicketDetail from "./pages/TicketDetail";
+import Tickets from "./pages/Tickets";
+import MyProfile from "./pages/MyProfile";
 
 function App() {
   const router = createBrowserRouter([
