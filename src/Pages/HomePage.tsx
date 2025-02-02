@@ -3,11 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Movie from '../types/movie';
+import { Movie } from '../types/movie';
 
 function HomePage() {
     const [movies, setMovies] = useState<Movie[]>([]);
-    const [activeMovie, setActiveMovie] = useState(0);
+    const [activeMovie, setActiveMovie] = useState<number>(() => {
+        const savedActiveMovie = localStorage.getItem('activeMovie');
+        return savedActiveMovie !== null ? parseInt(savedActiveMovie, 10) : 0;
+    });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,7 +33,12 @@ function HomePage() {
         }());
     }, []);
 
+    useEffect(() => {
+        localStorage.setItem('activeMovie', activeMovie.toString());
+    }, [activeMovie]);
+
     function nextMovie() {
+        if (!activeMovie) setActiveMovie(0);
         setActiveMovie(activeMovie == movies.length - 1 ? 0 : activeMovie + 1);
     }
 
@@ -47,7 +55,7 @@ function HomePage() {
     }
 
     function movieSelector(event: any) {
-        navigate('/movie-information');
+        navigate(`/movie/${event.target.id}`);
     }
 
     return (

@@ -1,4 +1,4 @@
-type Movie = {
+export type Movie = {
     id: number;
     title: string;
     description: string;
@@ -7,5 +7,3 @@ type Movie = {
     trailer: string;
     poster: string;
 }
-
-export default Movie;
