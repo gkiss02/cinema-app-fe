@@ -1,8 +1,7 @@
 import RootLayout from "./components/RootLayout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; 
 import HomePage from './pages/HomePage';
-import MovieInformation from "./pages/MovieDetail";
-import MovieProvider from './context/MovieProvider'
+//import MovieInformation from "./pages/MovieDetail";
 import Booking from "./pages/Booking";
 import TicketDetail from "./pages/TicketDetail";
 import Tickets from "./pages/Tickets";
@@ -15,7 +14,7 @@ function App() {
       element: <RootLayout></RootLayout>,
       children: [
         { path: "/", element: <HomePage></HomePage> },
-        { path: "/movie-information", element: <MovieInformation></MovieInformation> },
+        //{ path: "/movie-information", element: <MovieInformation></MovieInformation> },
         { path: "/booking", element: <Booking></Booking> },
         { path: "/ticket-detail", element: <TicketDetail></TicketDetail> },
         { path: "/tickets", element: <Tickets></Tickets> },
@@ -26,9 +25,7 @@ function App() {
   
   return (
     <div>
-      <MovieProvider>
-        <RouterProvider router={router}></RouterProvider>
-      </MovieProvider>
+      <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }

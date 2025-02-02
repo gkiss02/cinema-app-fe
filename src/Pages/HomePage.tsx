@@ -1,15 +1,34 @@
 import styles from './HomePage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronLeft, faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import { useState, useContext } from 'react';
-import { movies } from '../context/Movie';
-import { MovieCTX } from '../context/Context';
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Movie from '../types/movie';
 
 function HomePage() {
+    const [movies, setMovies] = useState<Movie[]>([]);
     const [activeMovie, setActiveMovie] = useState(0);
-    const movieCTX = useContext(MovieCTX);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        (async function () {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/movies/getMovies`, {
+                    method: 'GET',
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                setMovies(data);
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        }());
+    }, []);
 
     function nextMovie() {
         setActiveMovie(activeMovie == movies.length - 1 ? 0 : activeMovie + 1);
@@ -28,8 +47,6 @@ function HomePage() {
     }
 
     function movieSelector(event: any) {
-        movieCTX.setMovie(movies[event.target.id - 1]);
-        console.log(event.target.id);
         navigate('/movie-information');
     }
 
@@ -40,9 +57,9 @@ function HomePage() {
             </div>
             <div className={styles['carousel-container']}>
                 <FontAwesomeIcon icon={faChevronLeft} className={styles.arrow} onClick={prevMovie}/>
-                <img src={setFirstMovie().image} id={setFirstMovie().id.toString()} className={styles.img} onClick={movieSelector}></img>
-                <img src={movies[activeMovie].image} className={`${styles.img} ${styles['active-img']}`} id={movies[activeMovie].id.toString()} onClick={movieSelector}></img>
-                <img src={setLastMovie().image} className={styles.img} onClick={movieSelector}  id={setLastMovie().id.toString()}></img>
+                {movies.length > 0 && <img src={setFirstMovie().poster} id={setFirstMovie().id.toString()} className={styles.img} onClick={movieSelector}></img>}
+                {movies.length > 0 && <img src={movies[activeMovie].poster} className={`${styles.img} ${styles['active-img']}`} id={movies[activeMovie].id.toString()} onClick={movieSelector}></img>}
+                {movies.length > 0 && <img src={setLastMovie().poster} className={styles.img} onClick={movieSelector}  id={setLastMovie().id.toString()}></img>}
                 <FontAwesomeIcon icon={faChevronRight} className={styles.arrow} onClick={nextMovie}/>
             </div>
         </div>
