@@ -15,7 +15,7 @@ function App() {
       children: [
         { path: "/", element: <HomePage /> },
         { path: "/movie/:movieId", element: <Movie />},
-        { path: "/booking", element: <Booking /> },
+        { path: "/booking/:reservationId", element: <Booking /> },
         { path: "/ticket-detail", element: <TicketDetail />},
         { path: "/tickets", element: <Tickets /> },
         { path: "/myprofile", element: <MyProfile /> }

@@ -4,14 +4,38 @@ import DateCard from '../DateCard/DateCard';
 import Button from '../Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Screening from '../../types/screening';
 
 const OrderModal: React.FC<({closeModal: () => void})> = (props) => {
     const [selectedDate, setSelectedDate] = useState(1);
     const [selectedTime, setSelectedTime] = useState('');
     const [emptySelectedTime, setEmptySelectedTime] = useState(false);
+    const [screenings, setScreenings] = useState<Screening[]>([]);
+    const [selectedScreeningId, setSelectedScreeningId] = useState();
     const navigate = useNavigate();
+    const params = useParams();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/screenings/getScreeningsByMovie/${params.movieId}`, {
+                    method: 'GET',
+                });
+    
+                const data = await response.json();
+    
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                setScreenings(data);
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        })();
+    }, []);
 
     function selectDate(date: number) {
         setSelectedDate(date);
@@ -19,39 +43,51 @@ const OrderModal: React.FC<({closeModal: () => void})> = (props) => {
         setEmptySelectedTime(false);
     }
 
-    function selectTime(event: any) {
-        setSelectedTime(event.target.id);
+    function selectScreening(event: any) {
+        setSelectedScreeningId(event.target.id);
+        setSelectedTime(event.target.dataset.date);
         setEmptySelectedTime(false);
     }
 
-    function empty () {
-        if (selectedTime != '') navigate('/booking')
-        else setEmptySelectedTime(true);
+    function handleClick () {
+        if (selectedTime != '' && selectedScreeningId) {
+            navigate(`/booking/${selectedScreeningId}`);
+        } else {
+            setEmptySelectedTime(true);
+        }
     }
+
+    function getUniqueDates() {
+        return Array.from(new Set(screenings.map(screening => new Date(screening.date.toString().split('T')[0]).getTime())));
+    }
+
 
     return (
         createPortal (
         <div className={styles.container} onClick={props.closeModal}>
             <div className={styles['modal-container']} onClick={event => event.stopPropagation()}>
-                <FontAwesomeIcon icon={faX} className={styles.icon} onClick={props.closeModal}/>
+                <div className={styles['icon-container']} onClick={props.closeModal}>
+                    <FontAwesomeIcon icon={faX}/>
+                </div>
                 <h3>Select Date</h3>
                 <div className={styles['date-container']}>
-                    <DateCard day={1} month="Jan" selectedDate={selectedDate} selectDate={selectDate}/>
-                    <DateCard day={2} month="Jan" selectedDate={selectedDate} selectDate={selectDate}/>
-                    <DateCard day={3} month="Jan" selectedDate={selectedDate} selectDate={selectDate}/>
-                    <DateCard day={4} month="Jan" selectedDate={selectedDate} selectDate={selectDate}/>
-                    <DateCard day={5} month="Jan" selectedDate={selectedDate} selectDate={selectDate}/>
-                    <DateCard day={6} month="Jan" selectedDate={selectedDate} selectDate={selectDate}/>
-                    <DateCard day={7} month="Jan" selectedDate={selectedDate} selectDate={selectDate}/>
+                    {getUniqueDates().map(date => 
+                        <DateCard day={new Date(date).getDate()} month={new Date(date).toLocaleString("en-US", { month: "short" })} selectedDate={selectedDate} selectDate={selectDate}/>
+                    )}
                 </div>
                 <h3>Select Time</h3>
                 <div className={styles['time-container']}>
-                    <div id={'10:00'} className={`${styles.time} ${selectedTime == '10:00' && styles.selected} ${emptySelectedTime && styles.empty}`} onClick={selectTime}>10:00</div>
-                    <div id={'12:00'} className={`${styles.time} ${selectedTime == '12:00' && styles.selected} ${emptySelectedTime && styles.empty}`} onClick={selectTime}>12:00</div>
-                    <div id={'14:00'} className={`${styles.time} ${selectedTime == '14:00' && styles.selected} ${emptySelectedTime && styles.empty}`} onClick={selectTime}>14:00</div>
-                    <div id={'16:00'} className={`${styles.time} ${selectedTime == '16:00' && styles.selected} ${emptySelectedTime && styles.empty}`} onClick={selectTime}>16:00</div>
+                    {screenings.filter(screening => new Date(screening.date.toString().split('T')[0]).getDate() == selectedDate).map(screening =>
+                        <div 
+                            id={screening.id.toString()} 
+                            data-date={new Date(screening.date).toUTCString()} 
+                            className={`${styles.time} ${selectedTime == new Date(screening.date).toUTCString() && styles.selected} ${emptySelectedTime && styles.empty}`} 
+                            onClick={selectScreening}>
+                                {new Date(screening.date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
+                        </div>
+                    )}
                 </div>
-                <Button clickHandle={empty}>Order Now</Button>
+                <Button clickHandle={handleClick}>Order Now</Button>
             </div>
         </div>
         , document.body)
