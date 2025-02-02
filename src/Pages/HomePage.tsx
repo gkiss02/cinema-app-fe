@@ -1,4 +1,4 @@
-import styles from './Main.module.css';
+import styles from './HomePage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { useState, useContext } from 'react';
@@ -6,7 +6,7 @@ import { movies } from '../context/Movie';
 import { MovieCTX } from '../context/Context';
 import { useNavigate } from 'react-router-dom';
 
-function Main() {
+function HomePage() {
     const [activeMovie, setActiveMovie] = useState(0);
     const movieCTX = useContext(MovieCTX);
     const navigate = useNavigate();
@@ -49,4 +49,4 @@ function Main() {
     );
 }
 
-export default Main;
+export default HomePage;

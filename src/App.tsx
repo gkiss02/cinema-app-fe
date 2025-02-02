@@ -1,6 +1,6 @@
 import RootLayout from "./components/RootLayout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; 
-import Main from './pages/Main';
+import HomePage from './pages/HomePage';
 import MovieInformation from "./pages/MovieDetail";
 import MovieProvider from './context/MovieProvider'
 import Booking from "./pages/Booking";
@@ -14,7 +14,7 @@ function App() {
       path: "/",
       element: <RootLayout></RootLayout>,
       children: [
-        { path: "/", element: <Main></Main> },
+        { path: "/", element: <HomePage></HomePage> },
         { path: "/movie-information", element: <MovieInformation></MovieInformation> },
         { path: "/booking", element: <Booking></Booking> },
         { path: "/ticket-detail", element: <TicketDetail></TicketDetail> },
