@@ -15,7 +15,6 @@ function hourFormatter(minutes: number | undefined) {
     return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
 }
 
-
 function Movie() {
     const params = useParams();
     const [showModal, setShowModal] = useState(false);

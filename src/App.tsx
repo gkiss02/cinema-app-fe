@@ -6,6 +6,7 @@ import Booking from "./pages/Booking";
 import TicketDetail from "./pages/TicketDetail";
 import Tickets from "./pages/Tickets";
 import MyProfile from "./pages/MyProfile";
+import OrderForm from "./pages/OrderForm";
 
 function App() {
   const router = createBrowserRouter([
@@ -18,7 +19,8 @@ function App() {
         { path: "/booking/:reservationId", element: <Booking /> },
         { path: "/ticket-detail", element: <TicketDetail />},
         { path: "/tickets", element: <Tickets /> },
-        { path: "/myprofile", element: <MyProfile /> }
+        { path: "/myprofile", element: <MyProfile /> },
+        { path: "/orderForm", element: <OrderForm /> }
       ]
     }
   ]);

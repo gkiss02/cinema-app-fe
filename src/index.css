@@ -21,3 +21,28 @@ code {
 p, h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+input {
+  border: none;
+  outline: none;
+}
+
+input:focus {
+  border: none;
+}
+
+input:active {
+  border: none;
+}
