@@ -55,3 +55,8 @@
     bottom: 3rem;
     backdrop-filter: blur(5rem);
 }
+
+.reserved {
+    background-color: #90A4AE;
+    cursor: not-allowed;
+}

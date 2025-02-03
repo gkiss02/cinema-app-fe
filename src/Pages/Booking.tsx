@@ -4,11 +4,12 @@ import Button from '../components/Button/Button';
 import SeatSign from '../components/SeatSign/SeatSign';
 import { useReservationContext } from '../context/ReservationContext';
 import styles from './Booking.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function Booking() {
     const [isSelected, setIsSelected] = useState<string[]>([]);
     const reservationContext = useReservationContext();
+    const [reservedSeats, setReservedSeats] = useState<string[]>([]);
     const navigate = useNavigate();
 
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
@@ -17,6 +18,21 @@ function Booking() {
     for (let i = 0; i < 165; i++) {
         numbers.push(i);
     }
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/screenings/getReservedSeats/${reservationContext.screeningId}`, {
+                    method: 'GET',
+                });
+    
+                const data = await response.json();
+                setReservedSeats(data);
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+    }, []);
 
     function select(event: any) {
         const id = event.target.id;
@@ -45,14 +61,14 @@ function Booking() {
                         seatNumber = 1;
                     }
                     const isSeat = number % 15 != 0 && number % 15 != 14 && number % 15 != 6 && number % 15 != 7;
-                    const seatId = letters[count] + seatNumber;
+                    const seatId = seatNumber + letters[count];
                     if (isSeat && number < 150) seatNumber++;
                     if (number < 150) {
                         return (<div 
                                     id={isSeat ? seatId : number.toString()} 
                                     className={`${styles.square} ${isSeat && styles.seat} 
-                                                ${isSeat && isSelected.includes(seatId) && styles.selected}`
-                                            } 
+                                        ${isSeat && isSelected.includes(seatId) && styles.selected}
+                                        ${isSeat && reservedSeats.includes(seatId) && styles.reserved}`} 
                                     onClick={select}
                                 >
                             {(number % 15 == 0 || number % 15 == 14) && <p>{letters[count]}</p>}
