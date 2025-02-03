@@ -1,11 +1,16 @@
+import { useNavigate } from 'react-router-dom';
 import BackComponent from '../components/BackComponent/BackComponent';
 import Button from '../components/Button/Button';
 import SeatSign from '../components/SeatSign/SeatSign';
+import { useReservationContext } from '../context/ReservationContext';
 import styles from './Booking.module.css';
 import { useState } from 'react';
 
 function Booking() {
     const [isSelected, setIsSelected] = useState<string[]>([]);
+    const reservationContext = useReservationContext();
+    const navigate = useNavigate();
+
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
     let numbers: number[] = [];
@@ -20,6 +25,11 @@ function Booking() {
         } else {
             setIsSelected([...isSelected, id]);
         }
+    }
+
+    function confirm() {
+        reservationContext.setReservedSeats(isSelected);
+        navigate('/orderForm');
     }
 
     let count = -1;
@@ -58,7 +68,7 @@ function Booking() {
                 <SeatSign color='#90A4AE'>Reserved</SeatSign>
             </div>
             {isSelected.length != 0 && <div className={styles['confirm-container']}>
-                <Button clickHandle={() => {}}>Confirm</Button>
+                <Button clickHandle={confirm}>Confirm</Button>
             </div>}
         </div>
     );

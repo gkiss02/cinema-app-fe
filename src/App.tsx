@@ -7,6 +7,7 @@ import TicketDetail from "./pages/TicketDetail";
 import Tickets from "./pages/Tickets";
 import MyProfile from "./pages/MyProfile";
 import OrderForm from "./pages/OrderForm";
+import { ReservationProvider } from "./context/ReservationContext";
 
 function App() {
   const router = createBrowserRouter([
@@ -16,7 +17,7 @@ function App() {
       children: [
         { path: "/", element: <HomePage /> },
         { path: "/movie/:movieId", element: <Movie />},
-        { path: "/booking/:reservationId", element: <Booking /> },
+        { path: "/booking", element: <Booking /> },
         { path: "/ticket-detail", element: <TicketDetail />},
         { path: "/tickets", element: <Tickets /> },
         { path: "/myprofile", element: <MyProfile /> },
@@ -27,7 +28,9 @@ function App() {
   
   return (
     <div>
-      <RouterProvider router={router}></RouterProvider>
+      <ReservationProvider>
+        <RouterProvider router={router}></RouterProvider>
+      </ReservationProvider>
     </div>
   );
 }

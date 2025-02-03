@@ -1,6 +1,18 @@
 import styles from './Ticket.module.css';
 
-function Ticket() {
+type TicketProps = {
+    title: string,
+    date: Date,
+    seats: string[],
+};
+
+const Ticket: React.FC<(TicketProps)> = (props) => {
+    const formattedDate = props.date.toLocaleDateString('en-US', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+    }).toUpperCase();
+
     return (
         <div className={styles.container}>
             <svg width="421" height="161" viewBox="0 0 337 129" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,10 +36,19 @@ function Ticket() {
                     </filter>
                 </defs>
             </svg>
-            <h4 className={styles.text}>Shang-Chi and the Legend of the Ten Rings</h4>
+            <h4 className={styles.text}>{props.title}</h4>
             <div className={styles['detail-container']}>
-                <p>09:00 | Jan 1 2024</p>
-                <p>E8;E9</p>
+                <p>
+                    {`${props.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} | ${formattedDate}`}
+                </p>
+                <p>
+                    {props.seats.map((seat, index) => {
+                        if (index === props.seats.length - 1) {
+                            return seat;
+                        }
+                        return seat + ', ';
+                    })}
+                </p>
             </div>
         </div>
     )

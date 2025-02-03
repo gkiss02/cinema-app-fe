@@ -1,12 +1,20 @@
 import Button from "../components/Button/Button";
 import Input from "../components/Input/Input";
 import Ticket from "../components/Ticket/Ticket";
+import { useReservationContext } from "../context/ReservationContext";
 import styles from "./OrderForm.module.css";
 
 function OrderForm() {
+    const reservationContext = useReservationContext();
+
+    console.log(reservationContext);
     return (
         <div className={styles.container}>
-            <Ticket />
+            <Ticket
+                title={reservationContext.title}
+                date={reservationContext.date}
+                seats={reservationContext.reservedSeats}
+            />
             <div className={styles['form-container']}>
                 <Input 
                     placeholder="First name" 

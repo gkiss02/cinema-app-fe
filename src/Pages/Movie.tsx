@@ -7,6 +7,7 @@ import BackComponent from "../components/BackComponent/BackComponent";
 import OrderModal from "../components/OrderModel/OrderModal";
 import { useParams } from "react-router-dom";
 import { Movie as MovieType } from '../types/movie';
+import { useReservationContext } from "../context/ReservationContext";
 
 function hourFormatter(minutes: number | undefined) {
     if (!minutes) {
@@ -19,6 +20,7 @@ function Movie() {
     const params = useParams();
     const [showModal, setShowModal] = useState(false);
     const [movie, setMovie] = useState<MovieType>();
+    const reservationContext = useReservationContext();
 
     useEffect(() => {
         (async () => {
@@ -34,6 +36,8 @@ function Movie() {
                 }
                 
                 setMovie(data);
+
+                reservationContext.setTitle(data.title);
             } catch (error) {
                 console.log('Error:', error);
             }

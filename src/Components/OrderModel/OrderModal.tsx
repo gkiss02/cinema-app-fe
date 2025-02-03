@@ -7,6 +7,7 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Screening from '../../types/screening';
+import { useReservationContext } from '../../context/ReservationContext';
 
 const OrderModal: React.FC<({closeModal: () => void})> = (props) => {
     const [selectedDate, setSelectedDate] = useState(1);
@@ -14,6 +15,7 @@ const OrderModal: React.FC<({closeModal: () => void})> = (props) => {
     const [emptySelectedTime, setEmptySelectedTime] = useState(false);
     const [screenings, setScreenings] = useState<Screening[]>([]);
     const [selectedScreeningId, setSelectedScreeningId] = useState();
+    const reservationContext = useReservationContext();
     const navigate = useNavigate();
     const params = useParams();
 
@@ -51,7 +53,9 @@ const OrderModal: React.FC<({closeModal: () => void})> = (props) => {
 
     function handleClick () {
         if (selectedTime != '' && selectedScreeningId) {
-            navigate(`/booking/${selectedScreeningId}`);
+            navigate('/booking');
+            reservationContext.setScreeningId(selectedScreeningId);
+            reservationContext.setDate(new Date(selectedTime));
         } else {
             setEmptySelectedTime(true);
         }

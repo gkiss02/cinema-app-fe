@@ -5,9 +5,7 @@ function Tickets () {
     return (
         <div className={styles.container}>
             <div className={styles['ticket-container']}>
-                <Ticket></Ticket>
-                <Ticket></Ticket>
-                <Ticket></Ticket>
+
             </div>
         </div>
     )
