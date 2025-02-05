@@ -84,7 +84,7 @@ function Booking() {
                 <SeatSign color='#90A4AE'>Reserved</SeatSign>
             </div>
             {isSelected.length != 0 && <div className={styles['confirm-container']}>
-                <Button clickHandle={confirm}>Confirm</Button>
+                <Button onClick={confirm}>Confirm</Button>
             </div>}
         </div>
     );

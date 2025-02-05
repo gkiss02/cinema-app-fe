@@ -8,6 +8,9 @@ import Tickets from "./pages/Tickets";
 import MyProfile from "./pages/MyProfile";
 import OrderForm from "./pages/OrderForm";
 import { ReservationProvider } from "./context/ReservationContext";
+import Register from "./pages/Register";
+import ConfirmEmail from "./pages/ConfirmEmail";
+import Login from "./pages/Login";
 
 function App() {
   const router = createBrowserRouter([
@@ -21,7 +24,10 @@ function App() {
         { path: "/ticket-detail", element: <TicketDetail />},
         { path: "/tickets", element: <Tickets /> },
         { path: "/myprofile", element: <MyProfile /> },
-        { path: "/orderForm", element: <OrderForm /> }
+        { path: "/orderForm", element: <OrderForm /> },
+        { path: "/register", element: <Register /> },
+        { path: "confirm-email", element: <ConfirmEmail /> },
+        { path: "/login", element: <Login /> }
       ]
     }
   ]);

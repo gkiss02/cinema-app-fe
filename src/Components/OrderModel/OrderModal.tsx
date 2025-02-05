@@ -91,7 +91,7 @@ const OrderModal: React.FC<({closeModal: () => void})> = (props) => {
                         </div>
                     )}
                 </div>
-                <Button clickHandle={handleClick}>Order Now</Button>
+                <Button onClick={handleClick}>Order Now</Button>
             </div>
         </div>
         , document.body)

@@ -67,8 +67,8 @@ function Movie() {
                 <div className={styles['text-container']}>
                     <h1 className={styles.title}>{movie?.title}</h1>
                     <p className={styles.description}>{movie?.description}</p>
-                    <Button clickHandle={closeModal}>Get Ticket</Button>
-                    <a href={movie?.trailer} target="blank"><Button clickHandle={clickHandle}>Watch Trailer</Button></a>
+                    <Button onClick={closeModal}>Get Ticket</Button>
+                    <a href={movie?.trailer} target="blank"><Button onClick={clickHandle}>Watch Trailer</Button></a>
                 </div>
             </div>
             {showModal && <OrderModal closeModal={closeModal}></OrderModal>}

@@ -45,24 +45,24 @@ function OrderForm() {
                 <Input 
                     placeholder="First name" 
                     type="text"
-                    setValue={setFirstName}
+                    onChange={setFirstName}
                 />
                 <Input 
                     placeholder="Last name" 
                     type="text"
-                    setValue={setLastName}
+                    onChange={setLastName}
                 />
                 <Input 
                     placeholder="Email" 
                     type="email"
-                    setValue={setEmail}
+                    onChange={setEmail}
                 />
                 <div className={styles['checkbox-container']}>
                     <input type="checkbox" />
                     <p>I would like to register</p>
                 </div>
             </div>
-            <Button clickHandle={makeReservation}>Order</Button>
+            <Button onClick={makeReservation}>Order</Button>
         </div>
     );
 }

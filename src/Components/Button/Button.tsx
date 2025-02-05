@@ -1,8 +1,8 @@
 import styles from './Button.module.css';
 
-const Button: React.FC<({children: React.ReactNode, clickHandle: () => void})> = (props) => {
+const Button: React.FC<({children: React.ReactNode, onClick: () => void})> = (props) => {
     return (    
-        <button onClick={props.clickHandle} className={styles.container}>{props.children}</button>
+        <button onClick={props.onClick} className={styles.container}>{props.children}</button>
     )
 }
 
