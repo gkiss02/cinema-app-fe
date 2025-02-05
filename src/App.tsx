@@ -3,7 +3,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from './pages/HomePage';
 import Movie from "./pages/Movie";
 import Booking from "./pages/Booking";
-import TicketDetail from "./pages/TicketDetail";
 import Tickets from "./pages/Tickets";
 import MyProfile from "./pages/MyProfile";
 import OrderForm from "./pages/OrderForm";
@@ -21,7 +20,6 @@ function App() {
         { path: "/", element: <HomePage /> },
         { path: "/movie/:movieId", element: <Movie />},
         { path: "/booking", element: <Booking /> },
-        { path: "/ticket-detail", element: <TicketDetail />},
         { path: "/tickets", element: <Tickets /> },
         { path: "/myprofile", element: <MyProfile /> },
         { path: "/orderForm", element: <OrderForm /> },
