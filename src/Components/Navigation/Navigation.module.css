@@ -9,30 +9,3 @@
     display: flex;
     gap: 2.5rem;
 }
-
-.search-container {
-    position: relative;
-}
-
-.search-input {
-    width: 25rem;
-    height: 3.5rem;
-    border: 1px solid #78909C;
-    border-radius: 0.5rem;
-    padding: 0 1rem;
-    font-size: 1.5rem;
-    outline: none;
-    background-color: #455A64;
-    color: white;
-}
-
-.search-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    position: absolute;
-    top: 50%;
-    right: 1.2rem;
-    transform: translateY(-50%);
-    cursor: pointer;
-    border-radius: 16px;
-}

@@ -10,7 +10,6 @@ function OrderForm() {
     const [firstName, setFirstName] = useState<string>();
     const [lastName, setLastName] = useState<string>();
     const [email, setEmail] = useState<string>();
-    const [register, setRegister] = useState(false);
 
     const makeReservation = async () => {
         try {
@@ -57,10 +56,6 @@ function OrderForm() {
                     type="email"
                     onChange={setEmail}
                 />
-                <div className={styles['checkbox-container']}>
-                    <input type="checkbox" />
-                    <p>I would like to register</p>
-                </div>
             </div>
             <Button onClick={makeReservation}>Order</Button>
         </div>
