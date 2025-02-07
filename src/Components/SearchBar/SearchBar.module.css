@@ -29,7 +29,6 @@
     top: 50%;
     right: 1.2rem;
     transform: translateY(-50%);
-    cursor: pointer;
     border-radius: 16px;
 }
 
@@ -51,4 +50,16 @@
 
 .result:hover {
     background-color: #78909C;
+}
+
+.img {
+    width: 5rem;
+    height: 7.5rem;
+}
+
+.result-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.2rem;
 }

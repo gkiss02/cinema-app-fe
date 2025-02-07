@@ -16,7 +16,7 @@ function SearchBar () {
             return;
         }
 
-        if (ref.current?.value == '') {
+        if (ref.current?.value === '') {
             setMovies([]);
             return;
         }
@@ -38,12 +38,12 @@ function SearchBar () {
     };
 
     const handleClick = (event: any) => {
-        console.log(event.target.dataset.id);
-        navigate(`/movie/${event.target.dataset.id}`);
+        const movieId = event.currentTarget.dataset.id;
+        console.log(movieId);
+        navigate(`/movie/${movieId}`);
         ref.current!.value = '';
         setMovies([]);
     };
-
 
     return (
         <div className={styles.container}>
@@ -64,8 +64,14 @@ function SearchBar () {
                         className={styles.result} 
                         onClick={handleClick}
                         data-id={movie.id}
-                    >
-                        {movie.title}
+                    > 
+                        <div className={styles['result-content']}>  
+                            <img src={movie.poster} alt={movie.title} className={styles.img}/>
+                            <div className={styles['result-text']}>
+                                <h3>{movie.title}</h3>
+                                <p>{movie.description}</p>
+                            </div>
+                        </div> 
                     </div>
                 ))}
             </div>}
