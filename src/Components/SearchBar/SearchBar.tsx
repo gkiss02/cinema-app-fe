@@ -37,6 +37,14 @@ function SearchBar () {
         }
     };
 
+    const handleClick = (event: any) => {
+        console.log(event.target.dataset.id);
+        navigate(`/movie/${event.target.dataset.id}`);
+        ref.current!.value = '';
+        setMovies([]);
+    };
+
+
     return (
         <div className={styles.container}>
             <div className={styles['search-container']}>
@@ -54,7 +62,8 @@ function SearchBar () {
                     <div 
                         key={movie.id} 
                         className={styles.result} 
-                        onClick={() => navigate(`/movie/${movie.id}`)}
+                        onClick={handleClick}
+                        data-id={movie.id}
                     >
                         {movie.title}
                     </div>

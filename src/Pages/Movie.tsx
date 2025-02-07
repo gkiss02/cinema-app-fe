@@ -42,7 +42,7 @@ function Movie() {
                 console.log('Error:', error);
             }
         })();
-    }, []);
+    }, [params]);
 
     function clickHandle() {
         console.log('clicked');
