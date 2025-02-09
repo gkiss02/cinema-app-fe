@@ -7,6 +7,8 @@ type InputProps = {
     placeholder: string;
     type: string;
     onChange: (s: string | undefined) => void;
+    isValid: boolean;
+    errorMessage: string | undefined;
 };
 
 const Input: React.FC<InputProps> = (props) => {
@@ -21,11 +23,14 @@ const Input: React.FC<InputProps> = (props) => {
             <p className={styles.label}>{props.label}</p>
             <input type={props.type} 
                 placeholder={props.placeholder} 
-                className={styles.input}
+                className={`${styles.input} ${props.isValid && styles['error-border']}`} 
                 ref={ref} 
                 onChange={changeHandler}
                 name={props.name}
             />
+            {<p className={styles['error-text']} style={{visibility: props.isValid ? 'visible' : 'hidden'}}>
+                {props.errorMessage}
+            </p>}
         </div>
     );
 }

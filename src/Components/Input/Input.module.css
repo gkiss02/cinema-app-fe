@@ -14,6 +14,18 @@
     border: .1rem solid white;
 }
 
+.error-text {
+    font-size: 1.2rem;
+    text-align: left;
+    color: #FF5341;
+    max-width: 28rem;
+    height: .75rem;
+}
+
+.error-border {
+    border: .1rem solid #FF5341 !important;
+}
+
 .input:focus {
     border: .1rem solid white;
 }

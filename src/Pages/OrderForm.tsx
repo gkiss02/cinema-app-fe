@@ -5,6 +5,7 @@ import Ticket from "../components/Ticket/Ticket";
 import { useReservationContext } from "../context/ReservationContext";
 import styles from "./OrderForm.module.css";
 import { useNavigate } from "react-router-dom";
+import BackendError from "../types/backendError";
 
 function OrderForm() {
     const reservationContext = useReservationContext();
@@ -13,6 +14,7 @@ function OrderForm() {
     const [email, setEmail] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
+    const [errors, setErrors] = useState<BackendError[]>([]);
 
     const makeReservation = async () => {
         setLoading(true);
@@ -32,6 +34,15 @@ function OrderForm() {
             });
 
             const data = await response.json();
+
+            if (response.status === 422) {
+                let arr: BackendError[] = [];
+                data.errors.forEach((error: BackendError) => {
+                    arr.push(error);
+                })
+                setErrors(arr);
+                return;
+            }
 
             navigate('/reservationSuccess');
         } catch (error) {
@@ -55,6 +66,8 @@ function OrderForm() {
                     placeholder="John" 
                     type="text"
                     onChange={setFirstName}
+                    errorMessage={errors.find(x => x.path == 'firstName')?.msg} 
+                    isValid={errors.find(x => x.path == 'firstName') ? true : false} 
                 />
                 <Input 
                     name="lastName"
@@ -62,6 +75,8 @@ function OrderForm() {
                     placeholder="Doe" 
                     type="text"
                     onChange={setLastName}
+                    errorMessage={errors.find(x => x.path == 'lastName')?.msg}
+                    isValid={errors.find(x => x.path == 'lastName') ? true : false}
                 />
                 <Input 
                     name="lastName"
@@ -69,6 +84,8 @@ function OrderForm() {
                     placeholder="johndoe@example.com" 
                     type="email"
                     onChange={setEmail}
+                    errorMessage={errors.find(x => x.path == 'email')?.msg}
+                    isValid={errors.find(x => x.path == 'email') ? true : false}
                 />
             </div>
             <Button onClick={makeReservation}>{loading ? 'Ordering...' : 'Order'}</Button>

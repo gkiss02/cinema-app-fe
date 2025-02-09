@@ -78,7 +78,7 @@ function SearchBar () {
                     > 
                         <div className={styles['result-content']}>  
                             <img src={movie.poster} alt={movie.title} className={styles.img}/>
-                            <div className={styles['result-text']}>
+                            <div>
                                 <h3>{movie.title}</h3>
                                 <p>{movie.description}</p>
                             </div>
