@@ -1,11 +1,13 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigation } from 'react-router-dom';
 import Navigation from './Navigation/Navigation';
 
 function RootLayout () {
+  const navigation = useNavigation();
+  
   return (
     <div>
-      <Navigation></Navigation>
-      <Outlet />
+      <Navigation />
+      { navigation.state === 'idle' ?   <Outlet />: <p>Loading...</p>}
     </div>
   );
 }

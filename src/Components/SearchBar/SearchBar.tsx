@@ -9,6 +9,7 @@ function SearchBar () {
     const [movies, setMovies] = useState<Movie[]>([]);
     const ref = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const handleSearch = async () => {        
         if (ref.current?.value.length && ref.current?.value.length < 3) {
@@ -21,6 +22,7 @@ function SearchBar () {
             return;
         }
 
+        setLoading(true);
         try {
             const query = ref.current?.value;
             const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/movies/getMoviesByName?title=${query}`, {
@@ -34,6 +36,8 @@ function SearchBar () {
             setMovies(data);
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -57,7 +61,14 @@ function SearchBar () {
                 />
                 <FontAwesomeIcon icon={faMagnifyingGlass} className={styles['search-icon']}/>
             </div>
-            {movies.length !== 0 && <div className={styles['result-container']}>
+            {loading && <div className={styles['result-container']}>
+                <div className={styles.result}>
+                    <div className={styles['result-content']}>
+                        Loading...
+                    </div>
+                </div>
+            </div>}
+            {!loading && movies.length !== 0 && <div className={styles['result-container']}>
                 {movies.map((movie: Movie) => (
                     <div 
                         key={movie.id} 

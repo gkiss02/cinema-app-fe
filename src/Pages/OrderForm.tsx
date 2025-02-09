@@ -4,14 +4,18 @@ import Input from "../components/Input/Input";
 import Ticket from "../components/Ticket/Ticket";
 import { useReservationContext } from "../context/ReservationContext";
 import styles from "./OrderForm.module.css";
+import { useNavigate } from "react-router-dom";
 
 function OrderForm() {
     const reservationContext = useReservationContext();
     const [firstName, setFirstName] = useState<string>();
     const [lastName, setLastName] = useState<string>();
     const [email, setEmail] = useState<string>();
+    const [loading, setLoading] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const makeReservation = async () => {
+        setLoading(true);
         try {
             const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/reservations/makeReservation`, {
                 method: 'POST',
@@ -28,8 +32,12 @@ function OrderForm() {
             });
 
             const data = await response.json();
+
+            navigate('/reservationSuccess');
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -42,22 +50,28 @@ function OrderForm() {
             />
             <div className={styles['form-container']}>
                 <Input 
-                    placeholder="First name" 
+                    name="firstName"
+                    label="First name"
+                    placeholder="John" 
                     type="text"
                     onChange={setFirstName}
                 />
                 <Input 
-                    placeholder="Last name" 
+                    name="lastName"
+                    label="Last name"
+                    placeholder="Doe" 
                     type="text"
                     onChange={setLastName}
                 />
                 <Input 
-                    placeholder="Email" 
+                    name="lastName"
+                    label="Last name"
+                    placeholder="johndoe@example.com" 
                     type="email"
                     onChange={setEmail}
                 />
             </div>
-            <Button onClick={makeReservation}>Order</Button>
+            <Button onClick={makeReservation}>{loading ? 'Ordering...' : 'Order'}</Button>
         </div>
     );
 }

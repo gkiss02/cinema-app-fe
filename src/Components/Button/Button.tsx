@@ -1,8 +1,16 @@
 import styles from './Button.module.css';
 
-const Button: React.FC<({children: React.ReactNode, onClick: () => void})> = (props) => {
+type ButtonProps = {
+    children: React.ReactNode;
+    onClick: () => void;
+    disabled?: boolean;
+}
+
+const Button: React.FC<(ButtonProps)> = (props) => {
     return (    
-        <button onClick={props.onClick} className={styles.container}>{props.children}</button>
+        <button disabled={props.disabled} onClick={props.onClick} className={styles.container}>
+            {props.children}
+        </button>
     )
 }
 

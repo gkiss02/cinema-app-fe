@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { LoaderFunctionArgs, useLoaderData, useNavigate } from 'react-router-dom';
 import BackComponent from '../components/BackComponent/BackComponent';
 import Button from '../components/Button/Button';
 import SeatSign from '../components/SeatSign/SeatSign';
@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 function Booking() {
     const [isSelected, setIsSelected] = useState<string[]>([]);
     const reservationContext = useReservationContext();
-    const [reservedSeats, setReservedSeats] = useState<string[]>([]);
     const navigate = useNavigate();
+    const reservedSeats = useLoaderData() as string[];
 
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
@@ -18,21 +18,6 @@ function Booking() {
     for (let i = 0; i < 165; i++) {
         numbers.push(i);
     }
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/screenings/getReservedSeats/${reservationContext.screeningId}`, {
-                    method: 'GET',
-                });
-    
-                const data = await response.json();
-                setReservedSeats(data);
-            } catch (error) {
-                console.error(error);
-            }
-        })();
-    }, []);
 
     function select(event: any) {
         const id = event.target.id;
@@ -91,3 +76,16 @@ function Booking() {
 }
 
 export default Booking;
+
+export const bookingLoader = async ({ params }: LoaderFunctionArgs) => {
+    const screeningId = params.screeningId;
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/screenings/getReservedSeats/${screeningId}`, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch reserved seats');
+    }
+
+    return await response.json();
+};

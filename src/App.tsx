@@ -1,8 +1,8 @@
 import RootLayout from "./components/RootLayout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; 
-import HomePage from './pages/HomePage';
-import Movie from "./pages/Movie";
-import Booking from "./pages/Booking";
+import HomePage, { loadMovies as moviesLoader } from './pages/HomePage';
+import Movie, { loadMovie as movieLoader } from "./pages/Movie";
+import Booking, { bookingLoader } from "./pages/Booking";
 import OrderForm from "./pages/OrderForm";
 import { ReservationProvider } from "./context/ReservationContext";
 import ReservationSuccess from "./pages/ReservationSuccess";
@@ -13,9 +13,9 @@ function App() {
       path: "/",
       element: <RootLayout />,
       children: [
-        { path: "/", element: <HomePage /> },
-        { path: "/movie/:movieId", element: <Movie />},
-        { path: "/booking", element: <Booking /> },
+        { path: "/", element: <HomePage />, loader: moviesLoader },
+        { path: "/movie/:movieId", element: <Movie />,  loader: movieLoader},
+        { path: "/booking/:screeningId", element: <Booking />, loader: bookingLoader },
         { path: "/orderForm", element: <OrderForm /> },
         { path: "/reservationSuccess", element: <ReservationSuccess /> }
       ]
@@ -25,7 +25,7 @@ function App() {
   return (
     <div>
       <ReservationProvider>
-        <RouterProvider router={router}></RouterProvider>
+        <RouterProvider router={router} />
       </ReservationProvider>
     </div>
   );

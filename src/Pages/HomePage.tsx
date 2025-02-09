@@ -1,36 +1,14 @@
 import styles from './HomePage.module.css';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
 import { Movie } from '../types/movie';
 import Carousel from '../components/Carousel/Carousel';
 
 function HomePage() {
-    const [movies, setMovies] = useState<Movie[]>([]);
+    const navigation = useNavigation(); 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        (async function () {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/movies/getMovies`, {
-                    method: 'GET',
-                });
-
-                const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-
-                setMovies(data);
-            } catch (error) {
-                console.log('Error:', error);
-            }
-        }());
-    }, []);
+    const movies = useLoaderData() as Movie[];
 
     function movieSelector(event: any) {
-        console.log('Movie selected');
-        console.log(event.target.id);
         navigate(`/movie/${event.target.id}`);
     }
 
@@ -51,3 +29,15 @@ function HomePage() {
 }
 
 export default HomePage;
+
+export const loadMovies = async () => {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/movies/getMovies`, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch movies');
+    }
+
+    return await response.json();
+};

@@ -5,44 +5,23 @@ import InformationCard from "../components/InformationCard/InformationCard";
 import Button from "../components/Button/Button";
 import BackComponent from "../components/BackComponent/BackComponent";
 import OrderModal from "../components/OrderModel/OrderModal";
-import { useParams } from "react-router-dom";
+import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router-dom";
 import { Movie as MovieType } from '../types/movie';
 import { useReservationContext } from "../context/ReservationContext";
-
-function hourFormatter(minutes: number | undefined) {
-    if (!minutes) {
-        return '';
-    }
-    return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
-}
+import hourFormatter from "../utils/hourFormatter";
+import Screening from "../types/screening";
 
 function Movie() {
-    const params = useParams();
     const [showModal, setShowModal] = useState(false);
-    const [movie, setMovie] = useState<MovieType>();
+    const movie = useLoaderData() as MovieType;
     const reservationContext = useReservationContext();
+    const [screenings, setScreenings] = useState<Screening[]>([]);
+    const params = useParams();
+    const [loading, setloading] = useState(false);
 
     useEffect(() => {
-        (async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/movies/getMovieById/${params.movieId}`, {
-                    method: 'GET',
-                });
-
-                const data = await response.json();
-
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                
-                setMovie(data);
-
-                reservationContext.setTitle(data.title);
-            } catch (error) {
-                console.log('Error:', error);
-            }
-        })();
-    }, [params]);
+        reservationContext.setTitle(movie.title);
+    }, [movie]);
 
     function clickHandle() {
         console.log('clicked');
@@ -52,12 +31,34 @@ function Movie() {
         setShowModal(!showModal);
     }
 
+    const fetchScreenings = async () =>{
+        setloading(true);
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/screenings/getScreeningsByMovie/${params.movieId}`, {
+                method: 'GET',
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            
+            setScreenings(data);
+            setShowModal(true);
+        } catch (error) {
+            console.log('Error:', error);
+        } finally {
+            setloading(false);
+        }
+    }
+
     return (
         <div className={styles.container}>
             <BackComponent link={'/'}>Movie Details</BackComponent>
             <div className={styles.wrapper}>
                 <div className={styles['hero-container']}>
-                    <img src={movie?.poster} className={styles.img}></img>
+                    <img src={movie?.poster} className={styles.img} />
                     <div className={styles['information-card_container']}>
                         <InformationCard icon={faBookmark} name="Category" information={'+13'}/>
                         <InformationCard icon={faClock} name="Duration" information={hourFormatter(movie?.duration)}/>
@@ -65,15 +66,30 @@ function Movie() {
                     </div>
                 </div>
                 <div className={styles['text-container']}>
-                    <h1 className={styles.title}>{movie?.title}</h1>
-                    <p className={styles.description}>{movie?.description}</p>
-                    <Button onClick={closeModal}>Get Ticket</Button>
+                    <h1>{movie?.title}</h1>
+                    <p>{movie?.description}</p>
+                    <Button onClick={fetchScreenings} disabled={loading}>
+                        {loading ? 'Loading...' : 'Get Ticket'}
+                    </Button>
                     <a href={movie?.trailer} target="blank"><Button onClick={clickHandle}>Watch Trailer</Button></a>
                 </div>
             </div>
-            {showModal && <OrderModal closeModal={closeModal}></OrderModal>}
+            {showModal && <OrderModal closeModal={closeModal} screenings={screenings} />}
         </div>
     )
 }
 
 export default Movie;
+
+export const loadMovie = async ({ params }: LoaderFunctionArgs) => {
+    const { movieId } = params;
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/movies/getMovieById/${movieId}`, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch movie');
+    }
+
+    return await response.json();
+};

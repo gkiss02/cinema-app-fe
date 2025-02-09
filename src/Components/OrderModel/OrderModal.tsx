@@ -4,40 +4,18 @@ import DateCard from '../DateCard/DateCard';
 import Button from '../Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import Screening from '../../types/screening';
 import { useReservationContext } from '../../context/ReservationContext';
 
-const OrderModal: React.FC<({closeModal: () => void})> = (props) => {
+const OrderModal: React.FC<({closeModal: () => void, screenings: Screening[]})> = (props) => {
     const [selectedDate, setSelectedDate] = useState(1);
     const [selectedTime, setSelectedTime] = useState('');
     const [emptySelectedTime, setEmptySelectedTime] = useState(false);
-    const [screenings, setScreenings] = useState<Screening[]>([]);
     const [selectedScreeningId, setSelectedScreeningId] = useState();
     const reservationContext = useReservationContext();
     const navigate = useNavigate();
-    const params = useParams();
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/screenings/getScreeningsByMovie/${params.movieId}`, {
-                    method: 'GET',
-                });
-    
-                const data = await response.json();
-    
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                
-                setScreenings(data);
-            } catch (error) {
-                console.log('Error:', error);
-            }
-        })();
-    }, []);
 
     function selectDate(date: number) {
         setSelectedDate(date);
@@ -53,7 +31,7 @@ const OrderModal: React.FC<({closeModal: () => void})> = (props) => {
 
     function handleClick () {
         if (selectedTime != '' && selectedScreeningId) {
-            navigate('/booking');
+            navigate(`/booking/${selectedScreeningId}`);
             reservationContext.setScreeningId(selectedScreeningId);
             reservationContext.setDate(new Date(selectedTime));
         } else {
@@ -62,7 +40,7 @@ const OrderModal: React.FC<({closeModal: () => void})> = (props) => {
     }
 
     function getUniqueDates() {
-        return Array.from(new Set(screenings.map(screening => new Date(screening.date.toString().split('T')[0]).getTime())));
+        return Array.from(new Set(props.screenings.map(screening => new Date(screening.date.toString().split('T')[0]).getTime())));
     }
 
 
@@ -81,7 +59,7 @@ const OrderModal: React.FC<({closeModal: () => void})> = (props) => {
                 </div>
                 <h3>Select Time</h3>
                 <div className={styles['time-container']}>
-                    {screenings.filter(screening => new Date(screening.date.toString().split('T')[0]).getDate() == selectedDate).map(screening =>
+                    {props.screenings.filter(screening => new Date(screening.date.toString().split('T')[0]).getDate() == selectedDate).map(screening =>
                         <div 
                             id={screening.id.toString()} 
                             data-date={new Date(screening.date).toUTCString()} 
