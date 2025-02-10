@@ -6,6 +6,9 @@ import { useReservationContext } from "../context/ReservationContext";
 import styles from "./OrderForm.module.css";
 import { useNavigate } from "react-router-dom";
 import BackendError from "../types/backendError";
+import CheckoutForm from "../components/CheckOutForm/CheckoutForm";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 
 function OrderForm() {
     const reservationContext = useReservationContext();
@@ -15,6 +18,9 @@ function OrderForm() {
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const [errors, setErrors] = useState<BackendError[]>([]);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const makeReservation = async () => {
         setLoading(true);
@@ -52,6 +58,14 @@ function OrderForm() {
         }
     };
 
+    const stripePromise =
+    loadStripe('pk_test_51QqYEk2X1ovq6uUrFRxnjdYmpFuNUeRLs8H4g1GRd1sMfFyHW63C7LTJiH3LGBJYfXHnnxyxY63KxFt6mAzL7Hwi00TigGKEg0');
+const options: StripeElementsOptions = {
+  mode: 'payment',
+  currency: 'usd',
+  amount: 1099,
+};
+
     return (
         <div className={styles.container}>
             <Ticket
@@ -88,7 +102,10 @@ function OrderForm() {
                     isValid={errors.find(x => x.path == 'email') ? true : false}
                 />
             </div>
-            <Button onClick={makeReservation}>{loading ? 'Ordering...' : 'Order'}</Button>
+            <Button onClick={handleOpen}>{loading ? 'Ordering...' : 'Order'}</Button>
+            <Elements stripe={stripePromise} options={options}>
+                <CheckoutForm open={open} onClose={handleClose} />
+            </Elements>
         </div>
     );
 }
